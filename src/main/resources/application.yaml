@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: code-with-spring
+  profiles:
+    active: ${profile}
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/changelog.yaml
