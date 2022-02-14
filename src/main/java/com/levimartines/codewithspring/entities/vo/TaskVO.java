@@ -18,5 +18,6 @@ public class TaskVO {
     @NotNull(message = "Name cannot be empty or null")
     private String name;
 
+    @Builder.Default
     private Boolean done = false;
 }
