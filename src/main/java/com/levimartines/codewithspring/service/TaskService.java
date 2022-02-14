@@ -21,6 +21,7 @@ public class TaskService {
 
     public Task create(Task task) {
         task.setId(null);
+        task.setDone(false);
         return save(task);
     }
 
