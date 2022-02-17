@@ -2,7 +2,10 @@ spring:
   application:
     name: code-with-spring
   profiles:
-    active: ${profile}
+    active: ${PROFILE}
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/changelog.yaml
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+

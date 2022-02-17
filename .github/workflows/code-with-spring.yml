@@ -20,12 +20,9 @@ jobs:
       uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
       with:
         arguments: build
-    - name: Build & push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12
       with:
-        image: levimartines/code-with-spring
-        tags: latest
-        registry: docker.io
-        dockerfile: Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: ${{secrets.HEROKU_APP}}
+        heroku_email: ${{secrests.HEROKU_EMAIL}}
