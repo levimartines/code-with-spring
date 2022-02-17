@@ -20,6 +20,10 @@ jobs:
       uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
       with:
         arguments: build
+    - name: Run Coverage
+      run: |
+        chmod +x gradlew
+        ./gradlew jacocoTestCoverageVerification
     - name: Deploy to Heroku
       uses: akhileshns/heroku-deploy@v3.12.12
       with:
