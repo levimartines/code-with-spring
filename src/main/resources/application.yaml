@@ -9,3 +9,6 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
+jwt:
+  secret: SequenciaDeCaracteresParaAssinarToken
+  expiration: 86400000
