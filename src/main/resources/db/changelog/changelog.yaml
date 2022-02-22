@@ -31,3 +31,50 @@ databaseChangeLog:
                   name: updated_at
                   type: datetime
                   defaultValueComputed: NOW() ON UPDATE NOW()
+  - changeSet:
+      id: create-table-user
+      author: levi
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: user_pk
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValueBoolean: true
+              - column:
+                  name: is_admin
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  defaultValueComputed: NOW()
+              - column:
+                  name: updated_at
+                  type: datetime
+                  defaultValueComputed: NOW() ON UPDATE NOW()
+
