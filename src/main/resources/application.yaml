@@ -8,7 +8,9 @@ spring:
     change-log: classpath:/db/changelog/changelog.yaml
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
-
+  output:
+    ansi:
+      enabled: always
 jwt:
   secret: SequenciaDeCaracteresParaAssinarToken
   expiration: 86400000
