@@ -8,3 +8,15 @@ services:
       MYSQL_DATABASE: spring
     ports:
       - "3307:3306"
+
+  prometheus:
+    build: ./prometheus/
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - "3001:3000"
+    environment:
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
