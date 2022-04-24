@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpMethod.GET;
 
-public class AuthControllerIntegrationTest extends BaseIntegrationTest {
+class AuthControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void shouldReturn200AndAuthTokenWhenCredentialsMatch() {
@@ -41,8 +41,8 @@ public class AuthControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturn200WhenNotAuthorized() {
-        HttpEntity<?> entity = getEntity();
+    void shouldReturn200WhenAuthorized() {
+        HttpEntity<?> entity = getEntity(null);
         ResponseEntity<Void> response = restTemplate.exchange("/actuator", GET, entity, Void.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());

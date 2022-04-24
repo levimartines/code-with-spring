@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
     @InjectMocks
     private UserService service;
@@ -41,7 +41,7 @@ public class UserServiceTest {
         String name = "Test";
         String email = "test@test.com";
         User user = User.builder().id(1L).name(name).email(email).isAdmin(true).build();
-        Mockito.when(repository.findById(Mockito.eq(2L)))
+        Mockito.when(repository.findById(2L))
             .thenReturn(Optional.of(user));
 
         try (MockedStatic<PrincipalService> mocked = Mockito.mockStatic(PrincipalService.class)) {
@@ -50,7 +50,7 @@ public class UserServiceTest {
             User resp = service.findById(2L);
 
             mocked.verify(PrincipalService::authenticated);
-            Mockito.verify(repository, Mockito.times(1)).findById(Mockito.eq(2L));
+            Mockito.verify(repository, Mockito.times(1)).findById(2L);
             assertThat(resp).isNotNull();
             assertThat(resp.getName()).isEqualTo(name);
             assertThat(resp.getEmail()).isEqualTo(email);

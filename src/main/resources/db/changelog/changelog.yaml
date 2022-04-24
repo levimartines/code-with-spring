@@ -77,4 +77,22 @@ databaseChangeLog:
                   name: updated_at
                   type: datetime
                   defaultValueComputed: NOW() ON UPDATE NOW()
+  - changeSet:
+      id: add-user-task-relationship
+      author: levi
+      changes:
+        - addColumn:
+            tableName: task
+            columns:
+              - column:
+                  name: user_id
+                  type: INTEGER
+
+        - addForeignKeyConstraint:
+            constraintName: fk_task_user
+            baseTableName: task
+            baseColumnNames: user_id
+            referencedTableName: user
+            referencedColumnNames: id
+            validate: true
 

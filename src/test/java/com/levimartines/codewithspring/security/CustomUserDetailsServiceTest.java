@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
-public class CustomUserDetailsServiceTest {
+class CustomUserDetailsServiceTest {
 
     @InjectMocks
     private CustomUserDetailsService service;
@@ -27,7 +27,7 @@ public class CustomUserDetailsServiceTest {
     void shouldRetrieveUserDetailsWhenFindUser() {
         String email = "test@test.com";
         User user = User.builder().email(email).build();
-        Mockito.when(userRepository.findByEmail(Mockito.eq(email))).thenReturn(user);
+        Mockito.when(userRepository.findByEmail(email)).thenReturn(user);
 
         CustomUserDetails userDetails = (CustomUserDetails) service.loadUserByUsername(email);
         assertNotNull(userDetails);

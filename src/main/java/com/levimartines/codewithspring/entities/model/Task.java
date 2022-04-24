@@ -24,6 +24,7 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
     private String name;
     private Boolean done;
     private LocalDateTime createdAt;

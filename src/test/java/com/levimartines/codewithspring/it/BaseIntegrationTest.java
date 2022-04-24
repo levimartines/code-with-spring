@@ -3,8 +3,10 @@ package com.levimartines.codewithspring.it;
 import com.levimartines.codewithspring.CodeWithSpringApplication;
 import com.levimartines.codewithspring.entities.model.User;
 import com.levimartines.codewithspring.entities.vo.LoginVO;
+import com.levimartines.codewithspring.repository.TaskRepository;
 import com.levimartines.codewithspring.repository.UserRepository;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,14 +19,17 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = {CodeWithSpringApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
     private BCryptPasswordEncoder encoder;
     @Autowired
     protected TestRestTemplate restTemplate;
+    private User loggedUser;
 
     protected User createUser() {
         User user = buildAdminUser();
@@ -41,22 +46,24 @@ public class BaseIntegrationTest {
             .build();
     }
 
-    protected HttpEntity<?> getEntity() {
+    protected <T> HttpEntity<?> getEntity(T t) {
         ResponseEntity<Void> response = login();
         String bearerToken = response.getHeaders().get("Authorization").get(0);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", bearerToken);
-        return new HttpEntity<>(headers);
+        return new HttpEntity<>(t, headers);
     }
 
     protected ResponseEntity<Void> login() {
-        User user = createUser();
+        User user = loggedUser;
         LoginVO form = new LoginVO(user.getEmail(), "admin");
         return restTemplate.postForEntity("/login", form, Void.class);
     }
 
     @BeforeEach
     void beforeEach() {
+        taskRepository.deleteAll();
         userRepository.deleteAll();
+        loggedUser = createUser();
     }
 }

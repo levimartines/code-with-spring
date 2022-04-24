@@ -4,7 +4,6 @@ import com.levimartines.codewithspring.security.JWTAuthenticationFilter;
 import com.levimartines.codewithspring.security.JWTAuthorizationFilter;
 import com.levimartines.codewithspring.security.JWTUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,19 +18,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("customUserDetailsService")
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
+    private final JWTUtil jwtUtil;
 
     private static final String[] PUBLIC_MATCHERS_GET = {
         "/tasks"
     };
     private static final String[] PUBLIC_MATCHERS_POST = {
-        "/tasks",
         "/users"
     };
+
+    public SecurityConfig(@Qualifier("customUserDetailsService") UserDetailsService userDetailsService, JWTUtil jwtUtil) {
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

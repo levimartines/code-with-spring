@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -27,6 +29,18 @@ public class ControllerExceptionHandler {
             HttpStatus.FORBIDDEN.value(), "Forbidden",
             e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e,
+                                                      HttpServletRequest request) {
+        ValidationError err = new ValidationError(System.currentTimeMillis(),
+            HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation error",
+            "Invalid input", request.getRequestURI());
+        for (FieldError fieldErr : e.getBindingResult().getFieldErrors()) {
+            err.putError(fieldErr.getField(), fieldErr.getDefaultMessage());
+        }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
     }
 
     @ExceptionHandler(Exception.class)
