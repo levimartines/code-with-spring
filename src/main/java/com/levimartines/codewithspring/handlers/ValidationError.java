@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class ValidationError extends StandardError {
 
     @JsonProperty("errors")
+    @Getter
     private Map<String, String> errors = new HashMap<>();
 
     public ValidationError(Long timestamp, Integer status, String error, String message,
