@@ -18,7 +18,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Setter
 @Getter
 public class User implements Serializable {

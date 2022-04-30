@@ -6,6 +6,8 @@ import com.levimartines.codewithspring.entities.vo.LoginVO;
 import com.levimartines.codewithspring.repository.TaskRepository;
 import com.levimartines.codewithspring.repository.UserRepository;
 
+import java.util.Objects;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public abstract class BaseIntegrationTest {
     private BCryptPasswordEncoder encoder;
     @Autowired
     protected TestRestTemplate restTemplate;
-    private User loggedUser;
+    protected User loggedUser;
 
     protected User createUser() {
         User user = buildAdminUser();
@@ -58,6 +60,12 @@ public abstract class BaseIntegrationTest {
         User user = loggedUser;
         LoginVO form = new LoginVO(user.getEmail(), "admin");
         return restTemplate.postForEntity("/login", form, Void.class);
+    }
+
+    protected void setLoggedUserNoAdmin() {
+        User user = loggedUser.toBuilder().isAdmin(false).build();
+        loggedUser = user;
+        userRepository.save(user);
     }
 
     @BeforeEach
