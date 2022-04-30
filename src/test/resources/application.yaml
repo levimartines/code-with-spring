@@ -1,16 +1,26 @@
 spring:
   application:
     name: code-with-spring
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   profiles:
     active: test
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/changelog.yaml
+    contexts: test
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
   output:
     ansi:
       enabled: always
+  test:
+    database:
+      replace: none
 jwt:
   secret: SequenciaDeCaracteresParaAssinarToken
   expiration: 86400000

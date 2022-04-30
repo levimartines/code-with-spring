@@ -1,6 +1,5 @@
 package com.levimartines.codewithspring.it;
 
-import com.levimartines.codewithspring.entities.model.User;
 import com.levimartines.codewithspring.entities.vo.LoginVO;
 
 import org.junit.jupiter.api.Test;
@@ -26,8 +25,7 @@ class AuthControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void shouldReturn401WhenCredentialsDontMatch() {
-        User user = createUser();
-        LoginVO form = new LoginVO(user.getEmail(), "wrongPassword");
+        LoginVO form = new LoginVO(loggedUser.getEmail(), "wrongPassword");
         ResponseEntity<Void> response = restTemplate.postForEntity("/login", form, Void.class);
         assertNotNull(response);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());

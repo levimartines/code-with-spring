@@ -6,22 +6,49 @@ import com.levimartines.codewithspring.entities.vo.LoginVO;
 import com.levimartines.codewithspring.repository.TaskRepository;
 import com.levimartines.codewithspring.repository.UserRepository;
 
-import java.util.Objects;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.TestPropertySourceUtils;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(classes = {CodeWithSpringApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ContextConfiguration(initializers = BaseIntegrationTest.DockerMySQLDataSourceInitializer.class)
+@Testcontainers
 public abstract class BaseIntegrationTest {
+
+    public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:latest");
+
+    static {
+        mySQLContainer.start();
+    }
+
+    public static class DockerMySQLDataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(ConfigurableApplicationContext applicationContext) {
+
+            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+                applicationContext,
+                "spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
+                "spring.datasource.username=" + mySQLContainer.getUsername(),
+                "spring.datasource.password=" + mySQLContainer.getPassword()
+            );
+        }
+    }
 
     @Autowired
     private UserRepository userRepository;
