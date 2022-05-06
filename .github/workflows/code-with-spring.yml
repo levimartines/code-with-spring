@@ -3,8 +3,6 @@ name: Project CI/CD
 on:
   push:
     branches: [ main ]
-  pull_request:
-    types: [ opened, synchronize, reopened ]
 
 jobs:
   build:
@@ -18,23 +16,10 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
       with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-    - name: Cache Gradle packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-        restore-keys: ${{ runner.os }}-gradle
-    - name: Build and analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: ./gradlew build sonarqube --info
+        arguments: build
     - name: Run Coverage
       run: |
         chmod +x gradlew
