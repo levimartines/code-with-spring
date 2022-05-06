@@ -2,6 +2,7 @@ package com.levimartines.codewithspring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.levimartines.codewithspring.entities.vo.LoginVO;
+import com.levimartines.codewithspring.exceptions.AuthenticationExceptionImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,10 +34,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
         try {
             LoginVO creds = new ObjectMapper().readValue(req.getInputStream(), LoginVO.class);
-
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new AuthenticationExceptionImpl("Authentication failed", e);
         }
     }
 

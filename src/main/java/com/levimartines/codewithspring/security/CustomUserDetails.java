@@ -25,7 +25,7 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if (nonNull(user) && user.getIsAdmin()) {
+        if (nonNull(user) && user.isAdmin()) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
         return authorities;
@@ -58,10 +58,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return nonNull(user) ? user.getIsActive() : false;
+        return nonNull(user) && user.getIsActive();
     }
 
     public boolean isAdmin() {
-        return nonNull(user) ? user.getIsAdmin() : false;
+        return nonNull(user) && user.getIsAdmin();
     }
 }

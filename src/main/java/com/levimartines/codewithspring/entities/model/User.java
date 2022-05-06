@@ -2,6 +2,7 @@ package com.levimartines.codewithspring.entities.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,4 +34,8 @@ public class User implements Serializable {
     private Boolean isAdmin;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public boolean isAdmin() {
+        return Objects.nonNull(isAdmin) && isAdmin;
+    }
 }
