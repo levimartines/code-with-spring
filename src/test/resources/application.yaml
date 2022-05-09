@@ -21,6 +21,9 @@ spring:
   test:
     database:
       replace: none
+kafka:
+  topic:
+    user: test-code-with-spring.user
 jwt:
   secret: SequenciaDeCaracteresParaAssinarToken
   expiration: 86400000

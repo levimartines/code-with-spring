@@ -4,6 +4,7 @@ import com.levimartines.codewithspring.entities.model.User;
 import com.levimartines.codewithspring.entities.vo.UserVO;
 import com.levimartines.codewithspring.exceptions.AuthorizationException;
 import com.levimartines.codewithspring.exceptions.ObjectNotFoundException;
+import com.levimartines.codewithspring.kafka.UserProducer;
 import com.levimartines.codewithspring.repository.UserRepository;
 import com.levimartines.codewithspring.security.CustomUserDetails;
 import com.levimartines.codewithspring.security.PrincipalService;
@@ -32,6 +33,9 @@ class UserServiceTest {
 
     @Mock
     private UserRepository repository;
+
+    @Mock
+    private UserProducer producer;
 
     @Mock
     private BCryptPasswordEncoder encoder;
