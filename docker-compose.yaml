@@ -10,7 +10,7 @@ services:
       - "3307:3306"
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:6.2.0
+    image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper
     restart: always
     ports:
@@ -20,7 +20,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-server:6.2.0
+    image: confluentinc/cp-server:latest
     hostname: broker
     restart: always
     depends_on:

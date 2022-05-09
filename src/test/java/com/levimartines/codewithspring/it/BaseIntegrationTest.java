@@ -6,6 +6,7 @@ import com.levimartines.codewithspring.entities.vo.LoginVO;
 import com.levimartines.codewithspring.repository.TaskRepository;
 import com.levimartines.codewithspring.repository.UserRepository;
 
+import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,19 +17,17 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.TestPropertySourceUtils;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-@EmbeddedKafka(
-    partitions = 1,
-    topics = {"test-code-with-spring.user"})
+
 @SpringBootTest(
-    properties = "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
     classes = {CodeWithSpringApplication.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
@@ -39,6 +38,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class BaseIntegrationTest {
 
     public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:latest");
+
+    @ClassRule
+    public static KafkaContainer kafka =
+        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
 
     static {
         mySQLContainer.start();

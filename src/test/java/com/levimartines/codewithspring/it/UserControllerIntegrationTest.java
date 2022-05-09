@@ -1,8 +1,6 @@
 package com.levimartines.codewithspring.it;
 
 import com.levimartines.codewithspring.entities.dto.UserDTO;
-import com.levimartines.codewithspring.entities.model.Task;
-import com.levimartines.codewithspring.entities.vo.TaskVO;
 import com.levimartines.codewithspring.entities.vo.UserVO;
 import com.levimartines.codewithspring.handlers.StandardError;
 import com.levimartines.codewithspring.handlers.ValidationError;
@@ -15,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class UserControllerIntegrationTest extends BaseIntegrationTest {
 
