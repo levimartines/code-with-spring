@@ -16,6 +16,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +24,14 @@ import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest(classes = {CodeWithSpringApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EmbeddedKafka(
+    partitions = 1,
+    topics = {"code-with-spring.user"})
+@SpringBootTest(
+    properties = "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
+    classes = {CodeWithSpringApplication.class},
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = BaseIntegrationTest.DockerMySQLDataSourceInitializer.class)

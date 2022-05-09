@@ -18,6 +18,9 @@ spring:
   output:
     ansi:
       enabled: always
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
   test:
     database:
       replace: none
