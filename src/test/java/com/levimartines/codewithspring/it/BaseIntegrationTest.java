@@ -26,7 +26,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @EmbeddedKafka(
     partitions = 1,
-    topics = {"code-with-spring.user"})
+    topics = {"test-code-with-spring.user"})
 @SpringBootTest(
     properties = "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
     classes = {CodeWithSpringApplication.class},
