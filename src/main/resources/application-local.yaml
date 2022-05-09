@@ -3,3 +3,9 @@ spring:
     url: jdbc:mysql://localhost:3307/spring
     username: root
     password: root
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+kafka:
+  topic:
+    user: code-with-spring.user

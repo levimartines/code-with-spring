@@ -9,6 +9,11 @@
       "name": "jwt.expiration",
       "type": "java.lang.String",
       "description": "Time to expire JWT."
+    },
+    {
+      "name": "kafka.topic.user",
+      "type": "java.lang.String",
+      "description": "Name of Users topic in Kafka."
     }
   ]
 }

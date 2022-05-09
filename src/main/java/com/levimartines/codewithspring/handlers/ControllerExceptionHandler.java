@@ -1,10 +1,12 @@
 package com.levimartines.codewithspring.handlers;
 
 import com.levimartines.codewithspring.exceptions.AuthorizationException;
+import com.levimartines.codewithspring.exceptions.KafkaException;
 import com.levimartines.codewithspring.exceptions.ObjectNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -29,6 +31,22 @@ public class ControllerExceptionHandler {
             HttpStatus.FORBIDDEN.value(), "Forbidden",
             e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler(KafkaException.class)
+    public ResponseEntity<StandardError> kafkaException(KafkaException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(),
+            HttpStatus.FORBIDDEN.value(), "Kafka error",
+            e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardError> constraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(),
+            HttpStatus.FORBIDDEN.value(), "Constraint violation",
+            e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

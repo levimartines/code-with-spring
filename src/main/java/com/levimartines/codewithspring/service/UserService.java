@@ -4,11 +4,14 @@ import com.levimartines.codewithspring.entities.model.User;
 import com.levimartines.codewithspring.entities.vo.UserVO;
 import com.levimartines.codewithspring.exceptions.AuthorizationException;
 import com.levimartines.codewithspring.exceptions.ObjectNotFoundException;
+import com.levimartines.codewithspring.kafka.UserProducer;
 import com.levimartines.codewithspring.repository.UserRepository;
 import com.levimartines.codewithspring.security.CustomUserDetails;
 import com.levimartines.codewithspring.security.PrincipalService;
 
 import lombok.RequiredArgsConstructor;
+
+import javax.transaction.Transactional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repository;
+    private final UserProducer producer;
     private final BCryptPasswordEncoder encoder;
 
     public User findById(Long id) {
@@ -30,9 +34,12 @@ public class UserService {
             .orElseThrow(() -> new ObjectNotFoundException("Object with id " + id + " not found. Type: " + User.class));
     }
 
+    @Transactional
     public User create(UserVO vo) {
         User user = buildUserFromVo(vo);
-        return save(user);
+        user = save(user);
+        producer.send(user);
+        return user;
     }
 
     public User save(User user) {
