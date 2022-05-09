@@ -95,4 +95,12 @@ databaseChangeLog:
             referencedTableName: user
             referencedColumnNames: id
             validate: true
+  - changeSet:
+      id: add-user-email-unique-constraint
+      author: levi
+      changes:
+        - addUniqueConstraint:
+            tableName: user
+            columnNames: email
+            constraintName: unique-user-email-constraint
 
