@@ -3,3 +3,27 @@ spring:
     url:
     username:
     password:
+  kafka:
+    producer:
+      bootstrap-servers: pkc-ymrq7.us-east-2.aws.confluent.cloud:9092
+      properties:
+        security:
+          protocol: SASL_SSL
+        sasl:
+          mechanism: PLAIN
+          jaas:
+            config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='WNKWFCNXDOJE6WCO'   password='rLYU2CzfyXuck7p6oUtoGG68ukt2C7SkfMtVHwOdin9EL/G5JjGsH3GOPHnTdsWk';
+        basic:
+          auth:
+            credentials:
+              source: USER_INFO
+        schema:
+          registry:
+            basic:
+              auth:
+                user:
+                  info: ${SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO}
+            url: ${SCHEMA_REGISTRY_URL}
+kafka:
+  topic:
+    user: code-with-spring.user
