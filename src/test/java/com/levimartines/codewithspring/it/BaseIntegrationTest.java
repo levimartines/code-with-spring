@@ -33,18 +33,18 @@ import org.testcontainers.utility.DockerImageName;
 )
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ContextConfiguration(initializers = BaseIntegrationTest.DockerMySQLDataSourceInitializer.class)
+@ContextConfiguration(initializers = {BaseIntegrationTest.DockerMySQLDataSourceInitializer.class, BaseIntegrationTest.KafkaInitializer.class})
 @Testcontainers
 public abstract class BaseIntegrationTest {
 
     public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:latest");
 
     @ClassRule
-    public static KafkaContainer kafka =
-        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+    public static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
 
     static {
         mySQLContainer.start();
+        kafkaContainer.start();
     }
 
     public static class DockerMySQLDataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -57,6 +57,19 @@ public abstract class BaseIntegrationTest {
                 "spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
                 "spring.datasource.username=" + mySQLContainer.getUsername(),
                 "spring.datasource.password=" + mySQLContainer.getPassword()
+            );
+        }
+    }
+
+
+    public static class KafkaInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(ConfigurableApplicationContext applicationContext) {
+
+            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+                applicationContext,
+                "spring.kafka.producer.bootstrap-servers=" + kafkaContainer.getBootstrapServers()
             );
         }
     }
