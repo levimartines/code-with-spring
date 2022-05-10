@@ -24,3 +24,6 @@ spring:
 kafka:
   topic:
     user: code-with-spring.user
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 86400000

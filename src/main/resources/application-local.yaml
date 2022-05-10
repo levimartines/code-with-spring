@@ -9,3 +9,6 @@ spring:
 kafka:
   topic:
     user: code-with-spring.user
+jwt:
+  secret: SequenciaDeCaracteresParaAssinarToken
+  expiration: 86400000

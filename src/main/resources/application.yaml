@@ -15,9 +15,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-jwt:
-  secret: SequenciaDeCaracteresParaAssinarToken
-  expiration: 86400000
 
 management:
   endpoints:
