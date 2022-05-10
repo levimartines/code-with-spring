@@ -5,14 +5,14 @@ spring:
     password:
   kafka:
     producer:
-      bootstrap-servers: pkc-ymrq7.us-east-2.aws.confluent.cloud:9092
+      bootstrap-servers: ${KAFKA_PRODUCER_SERVER}
       properties:
         security:
           protocol: SASL_SSL
         sasl:
           mechanism: PLAIN
           jaas:
-            config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='WNKWFCNXDOJE6WCO'   password='rLYU2CzfyXuck7p6oUtoGG68ukt2C7SkfMtVHwOdin9EL/G5JjGsH3GOPHnTdsWk'
+            config: ${KAFKA_PRODUCER_JAAS_CONFIG}
         client:
           dns:
             lookup: use_all_dns_ips
